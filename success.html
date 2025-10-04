@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Дякуємо за заявку!</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0e0f12;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .box {
+      background: #111217;
+      padding: 2rem;
+      border-radius: 12px;
+      max-width: 400px;
+      text-align: center;
+    }
+    h1 { color: #ffcc00; }
+    p { margin: .5rem 0; }
+    input,
+textarea {
+    width: 100%;
+    padding: .6rem .8rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: #1a1c22; /* темний фон */
+    color: #fff;         /* білий текст */
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #aaa; /* щоб підказка була світло-сіра */
+}
+
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>Дякуємо!</h1>
+    <p>Ваша заявка успішно відправлена.</p>
+    <div id="userData"></div>
+    <a href="index.html" style="color:#ffcc00;">⬅ Повернутись на головну</a>
+  </div>
+
+  <script>
+    // Отримуємо параметри з URL
+    const params = new URLSearchParams(window.location.search);
+    let html = "";
+    for (const [key, value] of params.entries()) {
+      html += `<p><b>${key}:</b> ${decodeURIComponent(value)}</p>`;
+    }
+    document.getElementById("userData").innerHTML = html;
+
+    
+  </script>
+</body>
+</html>
