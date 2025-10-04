@@ -1313,6 +1313,33 @@
             padding: 0.8rem;
             font-size: 1rem;
         }
+        .popup-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 500px;
+  width: 90%;
+  color: #111; /* Загальний темний текст */
+}
+
+.popup-content input,
+.popup-content textarea,
+.popup-content select {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  color: #111;         /* текст у полях */
+  background-color: #fff; /* фон поля */
+}
+
+.popup-content input::placeholder,
+.popup-content textarea::placeholder {
+  color: #777; /* щоб плейсхолдер був видно */
+}
+
     </style>
 
     <script>
@@ -1455,7 +1482,81 @@
         if (heroTicketForm) {
             heroTicketForm.addEventListener("submit", validateAndSend);
         }
+document.addEventListener("DOMContentLoaded", () => {
+  const popupHero = document.getElementById("popupHero");
+  const heroStep1 = document.getElementById("heroStep1");
+  const heroStep2 = document.getElementById("heroStep2");
+  const heroCdCity = document.getElementById("heroCdCity");
+  const heroCdDate = document.getElementById("heroCdDate");
+  const heroBackBtn = document.getElementById("heroBackBtn");
+  const heroClosePopup = document.getElementById("heroClosePopup");
+  const heroTicketForm = document.getElementById("heroTicketForm");
+
+  // Відкрити HERO попап (кнопка на головній сторінці)
+  document.querySelectorAll(".openPopup[data-target='popupHero']").forEach(btn => {
+    btn.addEventListener("click", e => {
+      e.preventDefault();
+      popupHero.classList.add("show");
+      heroStep1.style.display = "block";
+      heroStep2.style.display = "none";
+    });
+  });
+
+  // Вибір концерту
+  document.querySelectorAll(".chooseHeroConcert").forEach(btn => {
+    btn.addEventListener("click", e => {
+      e.preventDefault();
+      const city = btn.dataset.city;
+      const date = btn.dataset.date;
+
+      heroCdCity.textContent = city;
+      heroCdDate.textContent = date;
+
+      heroStep1.style.display = "none";
+      heroStep2.style.display = "block";
+    });
+  });
+
+  // Кнопка Назад
+  heroBackBtn.addEventListener("click", () => {
+    heroStep2.style.display = "none";
+    heroStep1.style.display = "block";
+  });
+
+  // Закрити попап
+  heroClosePopup.addEventListener("click", () => {
+    popupHero.classList.remove("show");
+  });
+
+  // Закриття по кліку на фон
+  popupHero.addEventListener("click", e => {
+    if (e.target === popupHero) {
+      popupHero.classList.remove("show");
+    }
+  });
+
+  // Закриття по Esc
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && popupHero.classList.contains("show")) {
+      popupHero.classList.remove("show");
+    }
+  });
+
+  // Сабміт форми
+  heroTicketForm.addEventListener("submit", e => {
+    e.preventDefault();
+
+    const params = new URLSearchParams(new FormData(heroTicketForm));
+    // Додаємо дані про концерт
+    params.append("concert", heroCdCity.textContent + " — " + heroCdDate.textContent);
+
+    window.location.href = "success.html?" + params.toString();
+  });
+});
+
+
     </script>
+    
 </body>
 
 </html>
